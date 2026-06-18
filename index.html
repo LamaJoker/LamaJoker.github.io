@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>V.L. — Développeur & Automatisateur IA</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d1117;
+      --bg2:      #161b22;
+      --bg3:      #21262d;
+      --border:   #30363d;
+      --accent:   #10b981;
+      --accent2:  #059669;
+      --text:     #e6edf3;
+      --muted:    #8b949e;
+      --code-bg:  #0d1117;
+      --radius:   10px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13,17,23,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 56px;
+    }
+
+    .nav-logo {
+      font-family: 'Courier New', monospace;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.3);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 99px;
+      margin-bottom: 28px;
+      letter-spacing: 0.06em;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    .hero-initials {
+      font-family: 'Courier New', monospace;
+      font-size: clamp(72px, 14vw, 140px);
+      font-weight: 900;
+      line-height: 1;
+      color: var(--text);
+      letter-spacing: -0.04em;
+      margin-bottom: 16px;
+    }
+
+    .hero-initials span { color: var(--accent); }
+
+    .hero-tagline {
+      font-size: clamp(16px, 3vw, 22px);
+      color: var(--muted);
+      max-width: 540px;
+      margin-bottom: 36px;
+    }
+
+    .hero-tagline strong { color: var(--text); }
+
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: none;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+
+    /* ── SECTIONS ── */
+    section { padding: 80px 24px; }
+
+    .container { max-width: 1000px; margin: 0 auto; }
+
+    .section-label {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 520px;
+      margin-bottom: 48px;
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 60px;
+    }
+
+    .skill-pill {
+      padding: 6px 14px;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--muted);
+      transition: all 0.15s;
+    }
+
+    .skill-pill:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 18px;
+    }
+
+    .project-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      background: var(--bg2);
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s;
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+      opacity: 0;
+      transition: opacity 0.2s;
+      background: linear-gradient(135deg, rgba(16,185,129,0.06), transparent);
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(16,185,129,0.12);
+    }
+
+    .project-card:hover::after { opacity: 1; }
+
+    .project-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .project-icon {
+      font-size: 28px;
+    }
+
+    .project-arrow {
+      color: var(--muted);
+      font-size: 18px;
+      transition: all 0.15s;
+    }
+
+    .project-card:hover .project-arrow { color: var(--accent); transform: translate(2px,-2px); }
+
+    .project-name {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .project-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .project-tag {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--bg3);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    /* ── AI AUTOMATION SECTION ── */
+    #ai {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ai-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 700px) {
+      .ai-layout { grid-template-columns: 1fr; }
+    }
+
+    /* Workflow list */
+    .workflow-list {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    .workflow-list-header {
+      padding: 14px 18px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg3);
+    }
+
+    .workflow-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      cursor: pointer;
+      transition: all 0.12s;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .workflow-item:last-child { border-bottom: none; }
+
+    .workflow-item:hover {
+      background: var(--bg3);
+      color: var(--text);
+    }
+
+    .workflow-item.active {
+      background: rgba(16,185,129,0.1);
+      color: var(--accent);
+      border-left: 3px solid var(--accent);
+    }
+
+    .workflow-item-icon { font-size: 16px; min-width: 20px; }
+
+    /* Terminal */
+    .terminal {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--code-bg);
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .terminal-bar {
+      background: var(--bg3);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .terminal-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .dot-red    { background: #ff5f57; }
+    .dot-yellow { background: #febc2e; }
+    .dot-green  { background: #28c840; }
+
+    .terminal-title {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      flex: 1;
+      text-align: center;
+    }
+
+    .terminal-body {
+      padding: 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      flex: 1;
+      overflow-y: auto;
+      line-height: 1.7;
+    }
+
+    .terminal-placeholder {
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: 12px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .terminal-placeholder-icon { font-size: 36px; opacity: 0.4; }
+
+    .t-line { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 4px; }
+    .t-prompt { color: var(--accent); user-select: none; }
+    .t-text   { color: #cdd9e5; }
+    .t-comment { color: #6e7681; }
+    .t-step   { color: #f0883e; }
+    .t-ok     { color: var(--accent); }
+    .t-err    { color: #f85149; }
+    .t-info   { color: #58a6ff; }
+
+    .t-badge {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .t-badge-ok  { background: rgba(16,185,129,0.2); color: var(--accent); }
+    .t-badge-run { background: rgba(248,136,62,0.2); color: #f0883e; }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 14px;
+      background: var(--accent);
+      vertical-align: middle;
+      animation: cursor-blink 1s infinite;
+    }
+
+    @keyframes cursor-blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .progress-bar-wrap {
+      background: var(--bg3);
+      border-radius: 99px;
+      height: 4px;
+      margin: 12px 0;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    .terminal-result {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 8px;
+      background: rgba(16,185,129,0.08);
+      border: 1px solid rgba(16,185,129,0.2);
+      display: none;
+    }
+
+    .result-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .result-stat {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 3px 0;
+    }
+
+    .result-stat span:last-child { color: var(--text); }
+
+    /* ── CONTACT ── */
+    .contact-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 48px;
+      background: var(--bg2);
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .contact-card h3 {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .contact-card p {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 32px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    footer span { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">V.L._</div>
+  <ul class="nav-links">
+    <li><a href="#projets">Projets</a></li>
+    <li><a href="#ai">IA & Automatisation</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://github.com/LamaJoker" target="_blank" rel="noopener">GitHub ↗</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Disponible pour de nouveaux projets</div>
+  <div class="hero-initials">V<span>.</span>L<span>.</span></div>
+  <p class="hero-tagline">
+    Développeur web & <strong>automatisateur IA</strong> — je construis des apps, des outils et des workflows qui travaillent à ma place.
+  </p>
+  <div class="hero-cta">
+    <a href="#ai" class="btn btn-primary">Voir la démo IA →</a>
+    <a href="#projets" class="btn btn-outline">Mes projets</a>
+  </div>
+</section>
+
+<!-- ABOUT / SKILLS -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">// stack</div>
+    <h2 class="section-title">Ce avec quoi je travaille</h2>
+    <p class="section-sub">Du frontend au cloud, en passant par l'IA — j'assemble les bons outils pour chaque projet.</p>
+    <div class="skills-grid">
+      <span class="skill-pill">HTML / CSS / JS</span>
+      <span class="skill-pill">Alpine.js</span>
+      <span class="skill-pill">Node.js</span>
+      <span class="skill-pill">Python</span>
+      <span class="skill-pill">SQL / PostgreSQL</span>
+      <span class="skill-pill">Docker</span>
+      <span class="skill-pill">GitHub Actions</span>
+      <span class="skill-pill">Claude Code</span>
+      <span class="skill-pill">Claude API</span>
+      <span class="skill-pill">Prompt engineering</span>
+      <span class="skill-pill">Agents IA</span>
+      <span class="skill-pill">Workflows automatisés</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projets">
+  <div class="container">
+    <div class="section-label">// projets</div>
+    <h2 class="section-title">Ce que j'ai construit</h2>
+    <p class="section-sub">Des applications réelles, de l'idée au déploiement.</p>
+    <div class="projects-grid">
+
+      <a href="https://github.com/LamaJoker/kinetic" target="_blank" rel="noopener" class="project-card">
+        <div class="project-top">
+          <span class="project-icon">💪</span>
+          <span class="project-arrow">↗</span>
+        </div>
+        <div class="project-name">Kinetic</div>
+        <div class="project-desc">PWA fitness avec suivi de séances, statistiques personnelles et mode hors-ligne. Plus de 514 tests automatisés.</div>
+        <div class="project-tags">
+          <span class="project-tag">Alpine.js</span>
+          <span class="project-tag">PWA</span>
+          <span class="project-tag">Tests</span>
+          <span class="project-tag">Offline-first</span>
+        </div>
+      </a>
+
+      <a href="https://finitionroyale.fr" target="_blank" rel="noopener" class="project-card">
+        <div class="project-top">
+          <span class="project-icon">🚗</span>
+          <span class="project-arrow">↗</span>
+        </div>
+        <div class="project-name">Finition Royale</div>
+        <div class="project-desc">Site vitrine pour un préparateur automobile à Besançon. Design premium, SEO optimisé, formulaire de contact.</div>
+        <div class="project-tags">
+          <span class="project-tag">HTML/CSS</span>
+          <span class="project-tag">SEO</span>
+          <span class="project-tag">Vitrine pro</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/LamaJoker/autodemo" target="_blank" rel="noopener" class="project-card">
+        <div class="project-top">
+          <span class="project-icon">⚡</span>
+          <span class="project-arrow">↗</span>
+        </div>
+        <div class="project-name">AutoDemo SaaS</div>
+        <div class="project-desc">Plateforme SaaS avec authentification sécurisée (scrypt), 3 templates, formulaire de contact et séquence email branchée.</div>
+        <div class="project-tags">
+          <span class="project-tag">SaaS</span>
+          <span class="project-tag">Auth</span>
+          <span class="project-tag">Email</span>
+          <span class="project-tag">Templates</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- IA & AUTOMATION -->
+<section id="ai">
+  <div class="container">
+    <div class="section-label">// ia & automatisation</div>
+    <h2 class="section-title">Workflows IA — démo live</h2>
+    <p class="section-sub">J'utilise Claude Code pour automatiser les tâches répétitives. Sélectionne un workflow et observe l'exécution en temps réel.</p>
+
+    <div class="ai-layout">
+
+      <!-- WORKFLOW LIST -->
+      <div class="workflow-list">
+        <div class="workflow-list-header">Workflows disponibles</div>
+        <div class="workflow-item" onclick="runWorkflow(this, 'security')" data-id="security">
+          <span class="workflow-item-icon">🔍</span> Audit de sécurité
+        </div>
+        <div class="workflow-item" onclick="runWorkflow(this, 'tests')" data-id="tests">
+          <span class="workflow-item-icon">🧪</span> Génération de tests
+        </div>
+        <div class="workflow-item" onclick="runWorkflow(this, 'pr')" data-id="pr">
+          <span class="workflow-item-icon">🚀</span> Création de PR GitHub
+        </div>
+        <div class="workflow-item" onclick="runWorkflow(this, 'refactor')" data-id="refactor">
+          <span class="workflow-item-icon">🔧</span> Refactoring auto
+        </div>
+        <div class="workflow-item" onclick="runWorkflow(this, 'docs')" data-id="docs">
+          <span class="workflow-item-icon">📝</span> Documentation
+        </div>
+        <div class="workflow-item" onclick="runWorkflow(this, 'cicd')" data-id="cicd">
+          <span class="workflow-item-icon">⚙️</span> Pipeline CI/CD
+        </div>
+        <div class="workflow-item" onclick="runWorkflow(this, 'agents')" data-id="agents">
+          <span class="workflow-item-icon">🤖</span> Agents parallèles
+        </div>
+      </div>
+
+      <!-- TERMINAL -->
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="terminal-dots">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+          </div>
+          <div class="terminal-title" id="terminal-title">claude-code — bash</div>
+        </div>
+        <div class="terminal-body" id="terminal-body">
+          <div class="terminal-placeholder">
+            <div class="terminal-placeholder-icon">⬅</div>
+            <div style="color:var(--muted);font-size:13px;">Sélectionne un workflow pour lancer la démo</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-card">
+      <div class="section-label" style="margin-bottom:12px;">// contact</div>
+      <h3>Travaillons ensemble</h3>
+      <p>Projet web, automatisation IA, ou simple curiosité — écris-moi.</p>
+      <a href="mailto:darkshadow25000@gmail.com" class="btn btn-primary" style="font-size:15px;padding:13px 28px;">
+        ✉ darkshadow25000@gmail.com
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Construit avec <span>♥</span> et un peu d'IA — V.L. © 2026 · <a href="https://github.com/LamaJoker" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">GitHub</a></p>
+</footer>
+
+<script>
+const WORKFLOWS = {
+  security: {
+    title: 'Audit de sécurité — OWASP scan',
+    steps: [
+      { delay: 200,  text: '$ claude "Lance un audit de sécurité complet"', type: 'prompt' },
+      { delay: 600,  text: '→ Scanning 47 fichiers source...', type: 'info' },
+      { delay: 1000, text: '→ Grep: patterns dangereux (eval, innerHTML, exec)', type: 'step' },
+      { delay: 1600, text: '[WARN] src/auth/login.js:34 — SQL non paramétré détecté', type: 'err' },
+      { delay: 2000, text: '[WARN] src/api/upload.js:12 — MIME type non validé', type: 'err' },
+      { delay: 2500, text: '[INFO] Aucune clé API hardcodée trouvée ✓', type: 'ok' },
+      { delay: 3000, text: '→ Correction automatique des 2 vulnérabilités...', type: 'step' },
+      { delay: 3800, text: '✓ login.js — requête paramétrée appliquée', type: 'ok' },
+      { delay: 4200, text: '✓ upload.js — validation MIME ajoutée', type: 'ok' },
+      { delay: 4600, text: '→ Génération du rapport security-audit.md...', type: 'step' },
+      { delay: 5200, text: '✓ Audit terminé — 2 vulnérabilités corrigées, 0 restantes', type: 'ok' },
+    ],
+    result: { '🔍 Fichiers scannés': '47', '⚠ Vulnérabilités trouvées': '2', '✅ Corrigées automatiquement': '2', '⏱ Durée': '5.2s' }
+  },
+  tests: {
+    title: 'Génération de tests automatisés',
+    steps: [
+      { delay: 200,  text: '$ claude "Génère les tests manquants pour coverage > 80%"', type: 'prompt' },
+      { delay: 600,  text: '→ Analyse de la couverture actuelle...', type: 'info' },
+      { delay: 1000, text: '→ Coverage actuel : 41% (41/100 branches)', type: 'info' },
+      { delay: 1400, text: '→ Fonctions non couvertes détectées : 23', type: 'step' },
+      { delay: 1900, text: '→ Génération tests unitaires — utils/*.ts', type: 'step' },
+      { delay: 2500, text: '✓ utils.test.ts — 8 tests écrits', type: 'ok' },
+      { delay: 3000, text: '→ Génération tests API — routes/*.js', type: 'step' },
+      { delay: 3600, text: '✓ api.test.js — 15 tests écrits', type: 'ok' },
+      { delay: 4100, text: '→ Exécution npm test...', type: 'step' },
+      { delay: 4700, text: '✓ 23/23 tests passent — Coverage : 84%', type: 'ok' },
+    ],
+    result: { '🧪 Tests générés': '23', '📊 Coverage avant': '41%', '📊 Coverage après': '84%', '⏱ Durée': '4.7s' }
+  },
+  pr: {
+    title: 'Création Pull Request GitHub',
+    steps: [
+      { delay: 200,  text: '$ claude "Crée une PR GitHub avec mes changements"', type: 'prompt' },
+      { delay: 600,  text: '→ git diff --stat HEAD...', type: 'info' },
+      { delay: 1000, text: '  3 files changed, 127 insertions(+), 14 deletions(-)', type: 'comment' },
+      { delay: 1400, text: '→ Analyse sémantique des changements...', type: 'step' },
+      { delay: 1900, text: '→ Type détecté : feat (nouvelle fonctionnalité)', type: 'info' },
+      { delay: 2300, text: '→ git add src/auth/ src/api/users.js', type: 'step' },
+      { delay: 2700, text: '→ git commit -m "feat: add OAuth2 login with Google"', type: 'step' },
+      { delay: 3200, text: '✓ Commit créé : abc123f', type: 'ok' },
+      { delay: 3600, text: '→ git push origin feat/oauth2-google', type: 'step' },
+      { delay: 4100, text: '→ gh pr create --title "feat: OAuth2 login" ...', type: 'step' },
+      { delay: 4700, text: '✓ PR #47 créée → github.com/user/repo/pull/47', type: 'ok' },
+    ],
+    result: { '📁 Fichiers modifiés': '3', '➕ Lignes ajoutées': '127', '🔗 PR créée': '#47', '⏱ Durée': '4.7s' }
+  },
+  refactor: {
+    title: 'Refactoring automatisé',
+    steps: [
+      { delay: 200,  text: '$ claude "Détecte et refactorise les duplications"', type: 'prompt' },
+      { delay: 600,  text: '→ Glob scan — 63 fichiers .ts/.js analysés', type: 'info' },
+      { delay: 1100, text: '→ Détection patterns dupliqués...', type: 'step' },
+      { delay: 1600, text: '[DUP] formatDate() — présent dans 4 fichiers', type: 'err' },
+      { delay: 2000, text: '[DUP] validateEmail() — présent dans 3 fichiers', type: 'err' },
+      { delay: 2400, text: '[DUP] apiErrorHandler — logique identique x5', type: 'err' },
+      { delay: 2900, text: '→ Création src/utils/shared.ts...', type: 'step' },
+      { delay: 3400, text: '✓ 3 fonctions extraites dans shared.ts', type: 'ok' },
+      { delay: 3900, text: '→ Mise à jour des 12 imports...', type: 'step' },
+      { delay: 4400, text: '✓ 12 fichiers mis à jour', type: 'ok' },
+      { delay: 4800, text: '✓ Refactoring terminé — -186 lignes de code', type: 'ok' },
+    ],
+    result: { '🔍 Fichiers analysés': '63', '♻ Duplications trouvées': '3', '📉 Lignes supprimées': '186', '⏱ Durée': '4.8s' }
+  },
+  docs: {
+    title: 'Génération de documentation',
+    steps: [
+      { delay: 200,  text: '$ claude "Génère la documentation complète du projet"', type: 'prompt' },
+      { delay: 600,  text: '→ Lecture de 23 fonctions exportées...', type: 'info' },
+      { delay: 1100, text: '→ Extraction des signatures TypeScript...', type: 'step' },
+      { delay: 1600, text: '→ Génération README.md...', type: 'step' },
+      { delay: 2100, text: '✓ README.md — Installation, usage, exemples', type: 'ok' },
+      { delay: 2600, text: '→ Génération docs/API.md...', type: 'step' },
+      { delay: 3200, text: '✓ API.md — 23 endpoints documentés', type: 'ok' },
+      { delay: 3700, text: '→ Ajout JSDoc inline sur les fonctions...', type: 'step' },
+      { delay: 4300, text: '✓ 23 fonctions annotées (@param, @returns, @example)', type: 'ok' },
+      { delay: 4700, text: '✓ Documentation complète générée', type: 'ok' },
+    ],
+    result: { '📄 Fichiers générés': '2', '🔧 Fonctions documentées': '23', '📝 Lignes de docs': '847', '⏱ Durée': '4.7s' }
+  },
+  cicd: {
+    title: 'Pipeline CI/CD GitHub Actions',
+    steps: [
+      { delay: 200,  text: '$ claude "Crée un pipeline CI/CD complet pour ce projet"', type: 'prompt' },
+      { delay: 600,  text: '→ Détection du projet : Node.js 20 + PostgreSQL', type: 'info' },
+      { delay: 1100, text: '→ Génération .github/workflows/ci.yml...', type: 'step' },
+      { delay: 1600, text: '  + job: lint (ESLint + Prettier)', type: 'comment' },
+      { delay: 2000, text: '  + job: test (Jest + couverture)', type: 'comment' },
+      { delay: 2400, text: '  + job: build (Docker multi-stage)', type: 'comment' },
+      { delay: 2800, text: '  + job: deploy (conditonnel sur main)', type: 'comment' },
+      { delay: 3300, text: '→ Configuration secrets CI (DB_URL, JWT_SECRET)...', type: 'step' },
+      { delay: 3800, text: '✓ .github/workflows/ci.yml généré', type: 'ok' },
+      { delay: 4300, text: '✓ .github/workflows/deploy.yml généré', type: 'ok' },
+      { delay: 4700, text: '✓ Pipeline prêt — 4 jobs configurés', type: 'ok' },
+    ],
+    result: { '⚙ Jobs configurés': '4', '🐳 Docker stages': '2', '🔐 Secrets déclarés': '3', '⏱ Durée': '4.7s' }
+  },
+  agents: {
+    title: 'Agents IA parallèles',
+    steps: [
+      { delay: 200,  text: '$ claude "Lance une analyse multi-agents du projet"', type: 'prompt' },
+      { delay: 600,  text: '→ Décomposition en 3 sous-tâches parallèles...', type: 'info' },
+      { delay: 1000, text: '→ [Agent 1] Lancement — Audit sécurité', type: 'step' },
+      { delay: 1200, text: '→ [Agent 2] Lancement — Analyse performance', type: 'step' },
+      { delay: 1400, text: '→ [Agent 3] Lancement — Vérification des tests', type: 'step' },
+      { delay: 2800, text: '✓ [Agent 1] Terminé — 2 vulnérabilités détectées', type: 'ok' },
+      { delay: 3200, text: '✓ [Agent 2] Terminé — 3 goulots identifiés', type: 'ok' },
+      { delay: 3600, text: '✓ [Agent 3] Terminé — Coverage 41%, 23 tests manquants', type: 'ok' },
+      { delay: 4000, text: '→ Agrégation et synthèse des résultats...', type: 'step' },
+      { delay: 4600, text: '✓ Rapport consolidé généré — rapport-audit.md', type: 'ok' },
+    ],
+    result: { '🤖 Agents lancés': '3', '🔀 Exécution': 'Parallèle', '📋 Problèmes trouvés': '28', '⏱ Durée totale': '4.6s' }
+  }
+};
+
+let running = false;
+
+function runWorkflow(el, id) {
+  if (running) return;
+  running = true;
+
+  document.querySelectorAll('.workflow-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+
+  const wf = WORKFLOWS[id];
+  const body = document.getElementById('terminal-body');
+  const title = document.getElementById('terminal-title');
+  title.textContent = wf.title;
+  body.innerHTML = '<div class="progress-bar-wrap"><div class="progress-bar-fill" id="pbar"></div></div>';
+
+  const pbar = document.getElementById('pbar');
+  const total = wf.steps[wf.steps.length - 1].delay + 400;
+
+  let start = Date.now();
+  const tick = setInterval(() => {
+    const pct = Math.min(100, ((Date.now() - start) / total) * 100);
+    pbar.style.width = pct + '%';
+    if (pct >= 100) clearInterval(tick);
+  }, 50);
+
+  wf.steps.forEach(step => {
+    setTimeout(() => {
+      const line = document.createElement('div');
+      line.className = 't-line';
+
+      let cls = 't-text';
+      if (step.type === 'prompt')  cls = 't-prompt';
+      if (step.type === 'ok')      cls = 't-ok';
+      if (step.type === 'err')     cls = 't-err';
+      if (step.type === 'info')    cls = 't-info';
+      if (step.type === 'step')    cls = 't-step';
+      if (step.type === 'comment') cls = 't-comment';
+
+      line.innerHTML = `<span class="${cls}">${step.text}</span>`;
+      body.appendChild(line);
+      body.scrollTop = body.scrollHeight;
+    }, step.delay);
+  });
+
+  const lastDelay = wf.steps[wf.steps.length - 1].delay;
+
+  setTimeout(() => {
+    const resultDiv = document.createElement('div');
+    resultDiv.className = 'terminal-result';
+    resultDiv.style.display = 'block';
+
+    let html = '<div class="result-title">Résultat</div>';
+    for (const [k, v] of Object.entries(wf.result)) {
+      html += `<div class="result-stat"><span>${k}</span><span>${v}</span></div>`;
+    }
+    resultDiv.innerHTML = html;
+    body.appendChild(resultDiv);
+    body.scrollTop = body.scrollHeight;
+    running = false;
+  }, lastDelay + 500);
+}
+</script>
+
+</body>
+</html>
